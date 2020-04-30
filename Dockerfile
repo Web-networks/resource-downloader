@@ -1,7 +1,9 @@
 FROM golang:alpine as build
-COPY src /go
+COPY . /usr/src/resource-downloader
+WORKDIR /usr/src/resource-downloader/src
+ENV GO111MODULE=on
 RUN go build -o resource-downloader
 
 FROM alpine:latest as runtime
-COPY --from=build /go/resource-downloader resource-downloader
+COPY --from=build /usr/src/resource-downloader/src/resource-downloader resource-downloader
 CMD ["./resource-downloader"]
